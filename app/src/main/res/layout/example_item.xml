@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/textRecyclerViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:layout_below="@+id/imageRecyclerView"/>
+
+        <TextView
+            android:id="@+id/textRecyclerViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@android:color/black"
+            android:layout_below="@+id/textRecyclerViewTitle"/>
+
+        <ImageView
+            android:id="@+id/deleteItem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/textRecyclerViewTitle"
+            android:layout_alignStart="@+id/imageRecyclerView"
+            android:layout_alignLeft="@+id/imageRecyclerView"
+            android:layout_alignBottom="@+id/textRecyclerViewTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="333dp"
+            android:layout_marginLeft="333dp"
+            android:layout_marginBottom="191dp"
+            android:src="@drawable/ic_baseline_delete_outline" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
