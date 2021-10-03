@@ -10,9 +10,10 @@
     <color name="red">#DA2929</color>
     <color name="gray">#A9728A7C</color>
 
-    <color name="mainText">#000000</color>
-    <color name="textAlt">#4A4949</color>
+    <color name="mainText">#FFFFFF</color>
+    <color name="textAlt">#FFFFFF</color>
 
-    <color name="mainBackground">#FFFFFF</color>
+    <color name="mainBackground">#000000</color>
     <color name="buttonForeground">#3F51B5</color>
+
 </resources>

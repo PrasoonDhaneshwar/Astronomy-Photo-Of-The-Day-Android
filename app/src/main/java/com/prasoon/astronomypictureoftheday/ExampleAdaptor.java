@@ -41,7 +41,7 @@ public class ExampleAdaptor extends RecyclerView.Adapter<ExampleAdaptor.ExampleV
         return new ExampleViewHolder(v);
     }
 
-    // Get current items here
+    // Get list of current items here
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
         ExampleItem currentItem = mExampleList.get(position);

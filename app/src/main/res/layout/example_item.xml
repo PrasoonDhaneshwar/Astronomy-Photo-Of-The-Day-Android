@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:textSize="20sp"
             android:layout_below="@+id/imageRecyclerView"/>
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textAlt"
             android:layout_below="@+id/textRecyclerViewTitle"/>
 
         <ImageView
@@ -40,14 +40,10 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_below="@+id/textRecyclerViewTitle"
-            android:layout_alignStart="@+id/imageRecyclerView"
-            android:layout_alignLeft="@+id/imageRecyclerView"
             android:layout_alignBottom="@+id/textRecyclerViewTitle"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginStart="333dp"
-            android:layout_marginLeft="333dp"
             android:layout_marginBottom="191dp"
             android:src="@drawable/ic_baseline_delete_outline" />
 

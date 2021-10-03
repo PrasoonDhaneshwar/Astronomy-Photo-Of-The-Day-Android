@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,8 +26,10 @@ public class ExampleRecyclerViewActivity extends AppCompatActivity implements Ex
     private String TAG = "ExampleRecyclerViewActivity";
 
     public static final String EXTRA_URL = "imageUrl";
-    public static final String EXTRA_TITLE = "creatorName";
-    public static final String EXTRA_DATE = "likeCount";
+    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_DATE = "date";
+
+    private TextView mTextViewEmptyListUpdate;
 
     private RecyclerView mRecyclerView;
     private ExampleAdaptor mExampleAdaptor;
@@ -34,11 +37,12 @@ public class ExampleRecyclerViewActivity extends AppCompatActivity implements Ex
     private RequestQueue mRequestQueue;
     protected static String mUrlRequestForJsonRemoveFavorites = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example_recycler_view);
+        mTextViewEmptyListUpdate = findViewById(R.id.emptyListUpdate);
+
 
         mRecyclerView = findViewById(R.id.recyclerView);
         // Don't change width and height and load all images in fixed view
@@ -47,6 +51,10 @@ public class ExampleRecyclerViewActivity extends AppCompatActivity implements Ex
 
         mExampleItemList = new ArrayList<>();
         mRequestQueue = Volley.newRequestQueue(this);
+
+        if (mExampleItemList.size() == 0){
+            mTextViewEmptyListUpdate.setText("Seems empty, add your favorites here!");
+        }
 
         mFavoriteList = PrefConfig.readListFromPref(getApplicationContext());
         if (mFavoriteList == null){
@@ -77,7 +85,7 @@ public class ExampleRecyclerViewActivity extends AppCompatActivity implements Ex
                                 mExampleAdaptor = new ExampleAdaptor(ExampleRecyclerViewActivity.this, mExampleItemList);
                                 mRecyclerView.setAdapter(mExampleAdaptor);
                                 mExampleAdaptor.setOnItemClickListener(ExampleRecyclerViewActivity.this);
-
+                                mTextViewEmptyListUpdate.setText("");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -114,5 +122,9 @@ public class ExampleRecyclerViewActivity extends AppCompatActivity implements Ex
     private void removeItem(int position) {
         mExampleItemList.remove(position);
         mExampleAdaptor.notifyItemRemoved(position);
+        if (mExampleItemList.size() == 0){
+            mTextViewEmptyListUpdate.setText("Seems empty, add your favorites here!");
+        }
+
     }
 }

@@ -18,131 +18,183 @@
         app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.333" />
+
+    <ImageView
+        android:id="@+id/selectSecondActivity"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_view_list"
+        android:textColor="@drawable/drawable_text_color_favorite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.979" />
+
+    <ImageView
+        android:id="@+id/addIntoFavorites"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_favorite_border"
+        android:textColor="@drawable/drawable_text_color_favorite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.979" />
 
     <Button
         android:id="@+id/selectDateButton"
-        android:layout_width="121dp"
-        android:layout_height="41dp"
+        android:layout_width="98dp"
+        android:layout_height="31dp"
+        android:backgroundTint="@color/buttonForeground"
+        android:gravity="center"
         android:text="Select Date"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.935" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <Button
-        android:id="@+id/selectSecondActivity"
-        android:layout_width="121dp"
-        android:layout_height="41dp"
-        android:text="RecyclerView"
-        android:textSize="10sp"
+        android:id="@+id/darkMode"
+        android:layout_width="96dp"
+        android:layout_height="32dp"
+        android:background="@drawable/drawable_switch_btn_bg"
+        android:backgroundTint="@color/mainBackground"
+        android:gravity="center"
+        android:text="Dark Mode"
+        android:textAllCaps="false"
+        android:textColor="@color/mainText"
+        android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.978"
+        app:layout_constraintHorizontal_bias="0.418"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.848" />
+        app:layout_constraintVertical_bias="0.984" />
 
     <Button
         android:id="@+id/buttonParse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="82dp"
+        android:layout_height="35dp"
+        android:background="@color/mainBackground"
         android:backgroundTint="@android:color/holo_blue_dark"
+        android:gravity="center"
         android:text="View"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.786"
+        app:layout_constraintHorizontal_bias="0.819"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.851" />
+        app:layout_constraintVertical_bias="0.914" />
 
-    <Button
-        android:id="@+id/addIntoFavorites"
-        android:layout_width="55dp"
-        android:layout_height="33dp"
-        android:text="Fav"
-        android:textSize="5sp"
+    <TextView
+        android:layout_width="276dp"
+        android:layout_height="36dp"
+        android:fontFamily="@font/capriola"
+        android:gravity="left"
+        android:hyphenationFrequency="none"
+        android:text="Astronomy Picture of the Day"
+        android:textColor="@color/mainText"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
+        app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.925" />
+        app:layout_constraintVertical_bias="0.013" />
 
     <TextView
         android:id="@+id/textViewDatePicker"
         android:layout_width="99dp"
         android:layout_height="30dp"
         android:gravity="center"
-        android:text="date"
-        android:textSize="15sp"
+        android:textColor="@color/textAlt"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintHorizontal_bias="0.623"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.811" />
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="143dp"
-        android:layout_height="40dp"
-        android:gravity="top"
-        android:text="Title"
+        android:layout_width="293dp"
+        android:layout_height="34dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/mainText"
         android:textSize="15sp"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.005" />
 
     <TextView
         android:id="@+id/textViewMetadataDate"
         android:layout_width="137dp"
         android:layout_height="25dp"
-        android:gravity="center"
-        android:text="Date"
+        android:gravity="left"
+        android:textColor="@color/mainText"
         android:textSize="10sp"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
+        app:layout_constraintVertical_bias="0.878" />
 
     <TextView
         android:id="@+id/textViewExplanation"
-        android:layout_width="329dp"
-        android:layout_height="277dp"
+        android:layout_width="319dp"
+        android:layout_height="242dp"
         android:gravity="center"
-        android:text="parse value"
+        android:scrollbars="vertical"
+        android:text="Loading..."
+        android:textColor="@color/textAlt"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.967"
+        app:layout_constraintHorizontal_bias="0.951"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintVertical_bias="0.254" />
 
     <TextView
-        android:id="@+id/textViewFavoritesJson"
-        android:layout_width="143dp"
-        android:layout_height="40dp"
+        android:id="@+id/textViewSuggest"
+        android:layout_width="110dp"
+        android:layout_height="24dp"
         android:gravity="center"
-        android:text="api_link"
-        android:textSize="8sp"
+        android:textColor="@color/textAlt"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.848"
+        app:layout_constraintHorizontal_bias="0.837"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
+        app:layout_constraintVertical_bias="0.826" />
+
+    <TextView
+        android:layout_width="85dp"
+        android:layout_height="25dp"
+        android:gravity="right"
+        android:text="Favorites"
+        android:textColor="@color/textAlt"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.901" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

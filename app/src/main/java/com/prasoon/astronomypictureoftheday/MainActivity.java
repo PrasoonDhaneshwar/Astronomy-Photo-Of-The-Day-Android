@@ -1,6 +1,7 @@
 package com.prasoon.astronomypictureoftheday;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
@@ -17,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -36,29 +39,35 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private String TAG = "MainActivity";
 
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String URL_JSON = "urlJson";
+    public static final String NIGHT_MODE = "nightMode";
+
     private TextView mTextViewExplanation;
-    private TextView mTextViewDate;
-    private TextView mTextViewFavoritesJson;
+    private TextView mTextViewDatePicker;
+    private TextView mTextViewSuggest;
     private TextView mTextViewTitle;
     private TextView mTextViewMetadataDate;
 
-    private ImageView imageView;
     private Button mButtonParse;
     private Button mButtonSelectDateButton;
-    private Button mButtonSelectSecondActivity;
-    private Button buttonAddIntoFavorites;
+    private Button mButtonDarkMode;
+
+    private ImageView mImageView;
+    private ImageView mImageViewSelectSecondActivity;
+    private ImageView mImageViewAddIntoFavorites;
 
     private RequestQueue mQueue;
     private String mCurrentDateString = null;
     private String mCurrentDateFormatInput = null;
-    private String mUrlRequestDefault = null;
     private String mUrlRequestForJson = null;
+    private static final String mUrlRequestDefaultKey = "https://api.nasa.gov/planetary/apod?api_key=XqN37uhbQmRUqsm2nTFk4rsugtM2Ibe0YUS9HDE3";
+    private boolean isNightModeOn = false;
 
-    public static String mUrlRequestForJsonFavorites = null;
-
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String URL_JSON = "urlJson";
-
+    // This value will be given to RecyclerviewList for maintaining favorites
+    protected static String mUrlRequestForJsonFavorites = null;
+    // This value will be used when user opens the app again and corresponding date will be shown
+    protected static String mUrlRequestForJsonLastActive = null;
 
     protected void setmFavoriteList(String jsonLink) {
         mFavoriteList.add(jsonLink);
@@ -70,37 +79,69 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Dark mode preferences
+        mButtonDarkMode = findViewById(R.id.darkMode);
+        SharedPreferences prefDarkMode = getSharedPreferences(NIGHT_MODE, MODE_PRIVATE);
+        SharedPreferences.Editor editorDarkMode = prefDarkMode.edit();
+        isNightModeOn = prefDarkMode.getBoolean(NIGHT_MODE, false);
+
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            mButtonDarkMode.setText("Light Mode");
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            mButtonDarkMode.setText("Dark Mode");
+        }
+        // Start from the last opened date
+        mUrlRequestForJsonLastActive = PrefConfig.retrieveLastRequest(getApplicationContext());
+
+
+        mButtonDarkMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNightModeOn) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editorDarkMode.putBoolean(NIGHT_MODE, false);
+                    mButtonDarkMode.setText("Light Mode");
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editorDarkMode.putBoolean(NIGHT_MODE, true);
+                    mButtonDarkMode.setText("Dark Mode");
+                }
+                editorDarkMode.apply();
+            }
+        });
 
         mTextViewExplanation = findViewById(R.id.textViewExplanation);
         mTextViewExplanation.setMovementMethod(new ScrollingMovementMethod());
-        mTextViewDate = findViewById(R.id.textViewDatePicker);
+        mTextViewDatePicker = findViewById(R.id.textViewDatePicker);
+        mTextViewSuggest = findViewById(R.id.textViewSuggest);
         mButtonParse = findViewById(R.id.buttonParse);
-        imageView = findViewById(R.id.imageViewResult);
+        mImageView = findViewById(R.id.imageViewResult);
 
-        // Test out a new activity --start
-        mButtonSelectSecondActivity = findViewById(R.id.selectSecondActivity);
-        mButtonSelectSecondActivity.setOnClickListener(new View.OnClickListener() {
+        // Open Favorites Activity
+        mImageViewSelectSecondActivity = findViewById(R.id.selectSecondActivity);
+        mImageViewSelectSecondActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openRecyclerViewActivity();
             }
         });
 
-        // --end
         mTextViewTitle = findViewById(R.id.textViewTitle);
         mTextViewMetadataDate = findViewById(R.id.textViewMetadataDate);
 
-
+        // Initialize with a new request when app is opened.
         mQueue = Volley.newRequestQueue(this);
         jsonParse();
 
         mButtonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTextViewSuggest.setText("");
                 jsonParse();
             }
         });
-
 
         mButtonSelectDateButton = findViewById(R.id.selectDateButton);
         mButtonSelectDateButton.setOnClickListener(new View.OnClickListener() {
@@ -111,20 +152,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
 
-
-        buttonAddIntoFavorites = findViewById(R.id.addIntoFavorites);
-        buttonAddIntoFavorites.setOnClickListener(new View.OnClickListener() {
+        mImageViewAddIntoFavorites = findViewById(R.id.addIntoFavorites);
+        mImageViewAddIntoFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveDataIntoFavoriteList();
             }
         });
 
-        mTextViewFavoritesJson = findViewById(R.id.textViewFavoritesJson);
-
         loadDataIntoFavoriteList();
-        mTextViewDate.setText("MMM, D, YYYY");
-        // mTextViewDate.setText(mCurrentDateString);
+        mTextViewDatePicker.setText("\"Select Date\" to get today's picture!");
     }
 
     // Shared preferences methods
@@ -136,19 +173,17 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         setmFavoriteList(mUrlRequestForJsonFavorites);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(URL_JSON, mUrlRequestForJson);
-        mTextViewFavoritesJson.setText(mUrlRequestForJsonFavorites);
+        Log.d(TAG, "mUrlRequestForJsonFavorites: " + mUrlRequestForJsonFavorites);
         editor.apply();
         PrefConfig.saveData(getApplicationContext(), mUrlRequestForJsonFavorites);
+        Toast.makeText(MainActivity.this, "Added to Favorites!", Toast.LENGTH_SHORT).show();
     }
 
     private void loadDataIntoFavoriteList() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         mUrlRequestForJsonFavorites = sharedPreferences.getString(URL_JSON, "true");
-        mTextViewFavoritesJson.setText(mUrlRequestForJsonFavorites);
+        Log.d(TAG, "mUrlRequestForJsonFavorites: " + mUrlRequestForJsonFavorites);
     }
-
-    /*todo:
-    progressbar while image is loading picasso*/
 
     // Display date, explanation, Title and the image / video of the day
     // Default usage
@@ -156,16 +191,19 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     // https://api.nasa.gov/planetary/apod?api_key=XqN37uhbQmRUqsm2nTFk4rsugtM2Ibe0YUS9HDE3
 
     private void jsonParse() {
-        mUrlRequestDefault = "https://api.nasa.gov/planetary/apod?api_key=XqN37uhbQmRUqsm2nTFk4rsugtM2Ibe0YUS9HDE3";
+        Log.d(TAG, "mUrlRequestForJsonLastActive: " + mUrlRequestForJsonLastActive);
 
-
-        if (mCurrentDateFormatInput != null){
+        if (mCurrentDateFormatInput != null) {
             // Adding dates
-            mUrlRequestForJson = mUrlRequestDefault + "&" + "date" + "=" + mCurrentDateFormatInput;
-            Log.d(TAG, "mUrlRequestForJson: " + mUrlRequestForJson);
-        }
-        else {
-            mUrlRequestForJson = mUrlRequestDefault;
+            mUrlRequestForJson = mUrlRequestDefaultKey + "&" + "date" + "=" + mCurrentDateFormatInput;
+            mUrlRequestForJsonLastActive = mUrlRequestDefaultKey + "&" + "date" + "=" + mCurrentDateFormatInput;
+        } else {
+            // If the Last Active value is null.
+            if (mUrlRequestForJsonLastActive.equals("") || mUrlRequestForJsonLastActive == null) {
+                mUrlRequestForJson = mUrlRequestDefaultKey;
+            } else {
+                mUrlRequestForJson = mUrlRequestForJsonLastActive;
+            }
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, mUrlRequestForJson, null,
@@ -173,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            Log.d(TAG, "mUrlRequestForJson: " + mUrlRequestForJson);
                             String explanation = response.getString("explanation");
                             String date = response.getString("date");
                             String title = response.getString("title");
@@ -183,7 +222,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                             Log.d(TAG, "Image url: " + imageUrl);
 
                             // Attempt to resize the image to fit exactly into the target
-                            Picasso.get().load(imageUrl).fit().into(imageView);
+                            if (imageUrl == null) {
+                                Toast.makeText(MainActivity.this, "Image not received. Try again.", Toast.LENGTH_SHORT).show();
+                            }
+                            Picasso.get().load(imageUrl).into(mImageView);
                         } catch (JSONException e) {
                             Log.d(TAG, "JSONException: ");
                             e.printStackTrace();
@@ -194,10 +236,21 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d(TAG, "JsonObject Error Response" + error);
-                        Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (error instanceof TimeoutError) {
+                            Toast.makeText(MainActivity.this, "Unable to fetch from APOD. Try again.", Toast.LENGTH_SHORT).show();
+                            mButtonParse.setEnabled(true);
+                        } else if (error instanceof NoConnectionError) {
+                            Toast.makeText(MainActivity.this, "Please connect to Internet and try again.", Toast.LENGTH_SHORT).show();
+                            mButtonParse.setEnabled(false);
+                        }
                         error.printStackTrace();
+                        mButtonSelectDateButton.setEnabled(false);
+                        mButtonDarkMode.setEnabled(false);
+                        mImageViewSelectSecondActivity.setEnabled(false);
+                        mImageViewAddIntoFavorites.setEnabled(false);
+                        mTextViewExplanation.setText("No Internet!");
                     }
-        });
+                });
         request.setRetryPolicy(new DefaultRetryPolicy(50, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueue.add(request);
     }
@@ -218,11 +271,19 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mCurrentDateFormatInput = year + "-" + (monthString) + "-" + (dayOfMonthString);
         Log.d(TAG, "currentDateFormatInput: " + mCurrentDateFormatInput);
 
-        mTextViewDate.setText(mCurrentDateString);
+        mTextViewDatePicker.setText(mCurrentDateString);
+        mTextViewSuggest.setText("Click here to \"View\"");
     }
 
     private void openRecyclerViewActivity() {
         Intent intent = new Intent(this, ExampleRecyclerViewActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "Saving last request: " + mUrlRequestForJsonLastActive);
+        PrefConfig.saveLastActive(getApplicationContext(), mUrlRequestForJsonLastActive);
+        super.onDestroy();
     }
 }

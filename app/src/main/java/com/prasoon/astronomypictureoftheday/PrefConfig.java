@@ -12,11 +12,13 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 import static com.prasoon.astronomypictureoftheday.MainActivity.mFavoriteList;
+import static com.prasoon.astronomypictureoftheday.MainActivity.mUrlRequestForJsonLastActive;
 
 public class PrefConfig {
     private static String TAGPref = "PrefConfig";
 
     public static final String LIST_KEY = "list_key";
+    public static final String URL_JSON_LAST_ACTIVE = "urlJsonLastActive";
 
     public static void saveData(Context context, String string) {
         // Convert list to Json string
@@ -51,5 +53,23 @@ public class PrefConfig {
         editor.putString(LIST_KEY, json);
         editor.apply();
         Log.d(TAGPref, "updateData: " + mFavoriteList);
+    }
+
+
+    public static void saveLastActive(Context context, String string) {
+        // Convert list to Json string
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        mUrlRequestForJsonLastActive = string;
+        editor.putString(URL_JSON_LAST_ACTIVE, string);
+        Log.d(TAGPref, "saveLastActive: " + mUrlRequestForJsonLastActive);
+        editor.apply();
+    }
+
+    public static String retrieveLastRequest(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String string = pref.getString(URL_JSON_LAST_ACTIVE, "");
+        Log.d(TAGPref, "Last Request string: " + string);
+        return string;
     }
 }
