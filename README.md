@@ -36,7 +36,11 @@ Download it [here](https://raw.githubusercontent.com/PrasoonDhaneshwar/Astronomy
 
 ![](images/ListOfImages.jpg)
 
-#### *Support for Landscape orientation:* ####
+#### *Support for orientation:* ####
+
+![](images/MainPageLandscape.jpg)
+
+#### *Landscape workflow:* ####
 
 ![](images/LandscapeFlow.jpg)
 
@@ -44,9 +48,6 @@ Download it [here](https://raw.githubusercontent.com/PrasoonDhaneshwar/Astronomy
 
 ![](images/DetailImage.jpg)
 
-#### *Support for orientation:* ####
-
-![](images/MainPageLandscape.jpg)
 
 #### Dependencies ####
 
