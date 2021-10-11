@@ -55,4 +55,4 @@ Download it [here](https://raw.githubusercontent.com/PrasoonDhaneshwar/Astronomy
 - *[Picasso](https://square.github.io/picasso/).* A powerful image downloading and caching library for Android.
 - *[Gson](https://github.com/google/gson).* Convert Java Objects into their JSON representation.
 
-*Note: This app uses HTTP requests, and may return sometimes it may return a timeout. "View" again to make a request for metadata.*
+*Note: This app uses HTTP requests, and sometimes it may return a timeout. "View" again to make a request for metadata.*
