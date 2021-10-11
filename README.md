@@ -17,9 +17,9 @@ The DEMO_KEY should be changed at **line 64** of **MainActivity.java** *(mUrlReq
 Download it [here](https://raw.githubusercontent.com/PrasoonDhaneshwar/Astronomy-Photo-Of-The-Day-Android/main/Astronomy-Picture-of-the-Day-v1.0.apk) to run the application in your Android phone.
 
 #### App Features: ####
-- Allow users to search for the picture for a date of their choice
-- Allow users to create/manage a list of "favorite" listings
-- Display date, explanation, Title and the image / video of the day
+- Allow users to search for the picture for a date of their choice.
+- Allow users to create/manage a list of "favorite" listings.
+- Displays date, explanation, title and the image of the day.
 
 
 #### Extras: ####
